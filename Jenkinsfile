@@ -75,11 +75,18 @@ pipeline {
           sed -i 's/\\r$//' ci/deploy-remote.sh
           chmod +x ci/deploy-remote.sh
 
+          # The `lxc` snap refuses to run when $HOME is outside /home (the
+          # jenkins account's home is /var/lib/jenkins). Point HOME at a
+          # /home-based dir that the jenkins user owns — snap accepts it and
+          # stashes its per-user data there. The dir must exist on the host:
+          #   sudo mkdir -p /home/jenkins && sudo chown jenkins:jenkins /home/jenkins
+          #
           # Jenkins is on the LXD host, so REMOTE_DIR is just the workspace.
           # deploy-remote.sh cd's into it and expects the chart +
           # image-versions layout to be present (which it is — this IS the
           # deploy repo).
           env \
+            HOME=/home/jenkins \
             LXD_CONTAINER="$RESOLVED_LXD_CONTAINER" \
             ENV_NAME="$RESOLVED_ENV_NAME" \
             SCOPE="$RESOLVED_SCOPE" \
