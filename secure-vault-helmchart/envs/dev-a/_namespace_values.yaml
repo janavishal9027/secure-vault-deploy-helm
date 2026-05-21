@@ -1,0 +1,54 @@
+# Pinned per-env defaults. Pass this with -f BEFORE the per-service files
+# so service-specific overrides win.
+#
+# Three blocks:
+#   - chart-facing values (namespace, ingressHost)
+#   - vps.* — read by ci/deploy.sh on the runner
+#   - lxd.* — read by ci/deploy.sh and ci/deploy-remote.sh on the VPS
+
+namespace: secure-vault-dev-a
+ingressHost: secure-vault-dev-a.cntrlflix.com
+
+replicas: 1
+
+vps:
+  user: root
+  host: 72.60.206.166
+  remoteDir: /root/dev-a/secure-vault-deploy-helm
+
+lxd:
+  container: secure-vault-dev-a
+  # Bridge IP of the LXD container on lxdbr0 — host nginx proxy_pass target.
+  # Also reused by service env vars as the in-cluster Postgres / Kafka host
+  # (the LXD container's k3s pods reach host-network services via this IP).
+  bridgeIp: 10.86.216.71
+
+# Secrets rendered into k8s Secret resources by templates/secret.yaml.
+# WARNING — plaintext values committed in git. Migrate to External Secrets
+# Operator + Vault before opening the repo more widely.
+#
+# Each env MUST have a DISTINCT db password. JWT secret MUST be identical
+# across services in the same env (auth/notes/roles/ai-core all validate
+# against the same key). Set both before first deploy.
+secrets:
+  secure-vault-db:
+    password: REPLACE_WITH_dev-a_POSTGRES_PASSWORD
+  secure-vault-jwt:
+    secret: REPLACE_WITH_BASE64_HMAC_SECRET_SHARED_ACROSS_SERVICES
+  secure-vault-internal:
+    # Shared secret between authentication-service and roles-service.
+    # The auth Feign client sends it as a header; roles validates.
+    roleServiceKey: REPLACE_WITH_INTERNAL_ROLE_SERVICE_KEY
+    # First-admin bootstrap secret used by authentication-service.
+    delegateBootstrapKey: REPLACE_WITH_DELEGATE_BOOTSTRAP_KEY
+  secure-vault-oauth:
+    githubClientId: REPLACE_WITH_GITHUB_CLIENT_ID
+    githubClientSecret: REPLACE_WITH_GITHUB_CLIENT_SECRET
+    googleClientId: REPLACE_WITH_GOOGLE_CLIENT_ID
+    googleClientSecret: REPLACE_WITH_GOOGLE_CLIENT_SECRET
+  secure-vault-mail:
+    username: REPLACE_WITH_SMTP_USERNAME
+    password: REPLACE_WITH_SMTP_APP_PASSWORD
+  secure-vault-ai:
+    geminiApiKey: REPLACE_WITH_GEMINI_API_KEY
+    openaiApiKey: REPLACE_WITH_OPENAI_API_KEY

@@ -1,0 +1,31 @@
+microservices:
+  roles-service:
+    enabled: true
+    port: 3212
+    image:
+      repo: kittuvittu/secure-vault-roles
+    ingress:
+      # Comment this out for prod to keep roles fully private — only
+      # authentication-service should call it via the internal service URL.
+      path: /roles
+    env:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.180:5432/digital-notes?currentSchema=secure-vault"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      DIGITAL_APP_AUTHENTICATION: "http://authentication-service.secure-vault-prod.svc.cluster.local/authentication"
+      SWAGGER_ENABLED: "true"
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
+    secretEnv:
+      SPRING_DATASOURCE_PASSWORD:
+        secretName: secure-vault-db
+        key: password
+      INTERNAL_ROLE_SERVICE_KEY:
+        secretName: secure-vault-internal
+        key: roleServiceKey
+    # Lightest service in the stack — no Kafka, no multipart.
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "400m"
+        memory: "512Mi"

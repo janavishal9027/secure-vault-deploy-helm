@@ -1,0 +1,53 @@
+microservices:
+  ai-core-service:
+    enabled: true
+    port: 8001
+    servicePort: 8001
+    image:
+      repo: kittuvittu/secure-vault-ai-core
+    ingress:
+      path: /ai-core
+      # Traefik StripPrefix Middleware — FastAPI routers are mounted at the
+      # root (/embed, /search, /chat, /rag), so /ai-core/* must be stripped
+      # before reaching the pod.
+      stripPrefix: true
+    env:
+      APP_HOST: "0.0.0.0"
+      APP_PORT: "8001"
+      POSTGRES_HOST: "10.86.216.217"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "digital-notes"
+      POSTGRES_USER: "postgres"
+      POSTGRES_SCHEMA: "ai_core"
+      CHAT_PROVIDER: "openai"
+      EMBED_PROVIDER: "gemini"
+      CORS_ALLOWED_ORIGINS: "https://secure-vault-stage.cntrlflix.com"
+    secretEnv:
+      POSTGRES_PASSWORD:
+        secretName: secure-vault-db
+        key: password
+      JWT_SECRET:
+        secretName: secure-vault-jwt
+        key: secret
+      GEMINI_API_KEY:
+        secretName: secure-vault-ai
+        key: geminiApiKey
+      OPENAI_API_KEY:
+        secretName: secure-vault-ai
+        key: openaiApiKey
+    probes:
+      readiness:
+        httpGet:
+          path: /health
+        initialDelaySeconds: 15
+      liveness:
+        httpGet:
+          path: /health
+        initialDelaySeconds: 40
+    resources:
+      requests:
+        cpu: "150m"
+        memory: "512Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"

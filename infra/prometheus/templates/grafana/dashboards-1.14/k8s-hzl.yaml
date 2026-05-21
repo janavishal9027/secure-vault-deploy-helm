@@ -1,0 +1,874 @@
+{{- /*
+Generated from 'k8s-resources-cluster' from https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/master/manifests/grafana-dashboardDefinitions.yaml
+Do not change in-place! In order to change this file first read following link:
+https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/hack
+*/ -}}
+{{- $kubeTargetVersion := default .Capabilities.KubeVersion.GitVersion .Values.kubeTargetVersionOverride }}
+{{- if and (semverCompare ">=1.14.0-0" $kubeTargetVersion) (semverCompare "<9.9.9-9" $kubeTargetVersion) .Values.grafana.enabled .Values.grafana.defaultDashboardsEnabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ printf "%s-%s" (include "kube-prometheus-stack.fullname" $) "k8s-hzl-dashboard" | trunc 63 | trimSuffix "-" }}
+  annotations:
+{{ toYaml .Values.grafana.sidecar.dashboards.annotations | indent 4 }}
+  labels:
+    {{- if $.Values.grafana.sidecar.dashboards.label }}
+    {{ $.Values.grafana.sidecar.dashboards.label }}: "1"
+    {{- end }}
+    app: {{ template "kube-prometheus-stack.name" $ }}-grafana
+{{ include "kube-prometheus-stack.labels" $ | indent 4 }}
+data:
+  k8s-resources-cluster.json: |-
+    {
+        "annotations": {
+        "list": [
+            {
+            "builtIn": 1,
+            "datasource": {
+                "type": "datasource",
+                "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+                "limit": 100,
+                "matchAny": false,
+                "tags": [],
+                "type": "dashboard"
+            },
+            "type": "dashboard"
+            }
+        ]
+        },
+        "description": "Dashboard for monitoring Hazelcast IMDG clusters.",
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "gnetId": 13183,
+        "graphTooltip": 0,
+        "id": 21,
+        "links": [],
+        "liveNow": false,
+        "panels": [
+        {
+            "collapsed": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+            },
+            "id": 16,
+            "panels": [],
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "refId": "A"
+            }
+            ],
+            "title": "Overview",
+            "type": "row"
+        },
+        {
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "mappings": [],
+                "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                    {
+                    "color": "green",
+                    "value": null
+                    }
+                ]
+                },
+                "unit": "none"
+            },
+            "overrides": []
+            },
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 1
+            },
+            "id": 8,
+            "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+                "calcs": [
+                "last"
+                ],
+                "fields": "",
+                "values": false
+            },
+            "textMode": "auto"
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "max(hz_cluster_size)",
+                "format": "time_series",
+                "interval": "",
+                "legendFormat": "Member count",
+                "range": true,
+                "refId": "A"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "round(max(hz_cluster_clock_clusterUpTime) / (1000 * 60))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Cluster uptime (minutes)",
+                "refId": "B"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "max(hz_client_endpoint_count)",
+                "interval": "",
+                "legendFormat": "Client count",
+                "refId": "C"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "",
+                "interval": "",
+                "legendFormat": "",
+                "refId": "D"
+            }
+            ],
+            "title": "Cluster overview",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "mappings": [],
+                "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                    {
+                    "color": "green",
+                    "value": null
+                    }
+                ]
+                }
+            },
+            "overrides": []
+            },
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+            },
+            "id": 10,
+            "options": {
+            "displayMode": "basic",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "vertical",
+            "reduceOptions": {
+                "calcs": [
+                "mean"
+                ],
+                "fields": "",
+                "values": false
+            },
+            "showUnfilled": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "com_hazelcast_Metrics_activePartitionCount",
+                "interval": "",
+                "legendFormat": "Member {}",
+                "range": true,
+                "refId": "A"
+            }
+            ],
+            "title": "Partition counts",
+            "type": "bargauge"
+        },
+        {
+            "aliasColors": ,
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "links": []
+            },
+            "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 9
+            },
+            "hiddenSeries": false,
+            "id": 4,
+            "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+            "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.4.7",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "com_hazelcast_Metrics_systemLoadAverage",
+                "interval": "",
+                "legendFormat": "{}",
+                "range": true,
+                "refId": "A"
+            }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "System load",
+            "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+            },
+            "yaxes": [
+            {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+            },
+            {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+            }
+            ],
+            "yaxis": {
+            "align": false
+            }
+        },
+        {
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "mappings": [],
+                "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                    {
+                    "color": "green",
+                    "value": null
+                    },
+                    {
+                    "color": "red",
+                    "value": 90
+                    }
+                ]
+                },
+                "unit": "%"
+            },
+            "overrides": []
+            },
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 9
+            },
+            "id": 12,
+            "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+                "calcs": [
+                "mean"
+                ],
+                "fields": "",
+                "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "(com_hazelcast_Metrics_usedHeap / (com_hazelcast_Metrics_usedHeap + com_hazelcast_Metrics_freeHeap))*100",
+                "interval": "",
+                "legendFormat": "{}",
+                "range": true,
+                "refId": "C"
+            }
+            ],
+            "title": "Heap usage",
+            "type": "gauge"
+        },
+        {
+            "collapsed": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 17
+            },
+            "id": 14,
+            "panels": [],
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "refId": "A"
+            }
+            ],
+            "title": "Caches",
+            "type": "row"
+        },
+        {
+            "collapsed": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 18
+            },
+            "id": 20,
+            "panels": [],
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "refId": "A"
+            }
+            ],
+            "title": "Maps",
+            "type": "row"
+        },
+        {
+            "aliasColors": ,
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "links": []
+            },
+            "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 24,
+            "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+            "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.4.7",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "com_hazelcast_Metrics_ownedEntryMemoryCost / 1000  ",
+                "interval": "",
+                "legendFormat": "Owned entry mem. {}",
+                "range": true,
+                "refId": "A"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_backupEntryMemoryCost / 1000",
+                "interval": "",
+                "legendFormat": "Backup entry mem. {}",
+                "refId": "B"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_heapCost / 1000",
+                "interval": "",
+                "legendFormat": "Heap cost {}",
+                "refId": "C"
+            }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Memory usage",
+            "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+            },
+            "yaxes": [
+            {
+                "format": "decmbytes",
+                "logBase": 1,
+                "show": true
+            },
+            {
+                "format": "decmbytes",
+                "logBase": 1,
+                "show": true
+            }
+            ],
+            "yaxis": {
+            "align": false
+            }
+        },
+        {
+            "aliasColors": ,
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "links": []
+            },
+            "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 22,
+            "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+            "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.4.7",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "com_hazelcast_Metrics_totalGetLatency / com_hazelcast_Metrics_getCount",
+                "interval": "",
+                "legendFormat": "Get time {}",
+                "range": true,
+                "refId": "A"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_totalPutLatency / ignoring(unit) hz_map_putCount",
+                "interval": "",
+                "legendFormat": "Put time {}",
+                "refId": "B"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_totalRemoveLatency / ignoring(unit) hz_map_removeCount",
+                "interval": "",
+                "legendFormat": "Remove time {}",
+                "refId": "C"
+            }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average operation times",
+            "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+            },
+            "yaxes": [
+            {
+                "format": "ms",
+                "logBase": 1,
+                "show": true
+            },
+            {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+            }
+            ],
+            "yaxis": {
+            "align": false
+            }
+        },
+        {
+            "aliasColors": ,
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "links": []
+            },
+            "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 27
+            },
+            "hiddenSeries": false,
+            "id": 26,
+            "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+            "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.4.7",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "com_hazelcast_Metrics_ownedEntryCount",
+                "interval": "",
+                "legendFormat": "Owned entries {} ",
+                "range": true,
+                "refId": "A"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_backupEntryCount  ",
+                "interval": "",
+                "legendFormat": "Backup entries {}",
+                "refId": "B"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_lockedEntryCount  ",
+                "interval": "",
+                "legendFormat": "Locked entries {}",
+                "refId": "C"
+            },
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "expr": "hz_map_dirtyEntryCount",
+                "interval": "",
+                "legendFormat": "Dirty entries: {}",
+                "refId": "D"
+            }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Entry count",
+            "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+            },
+            "yaxes": [
+            {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+            },
+            {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+            }
+            ],
+            "yaxis": {
+            "align": false
+            }
+        },
+        {
+            "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+            },
+            "fieldConfig": {
+            "defaults": {
+                "mappings": [],
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                    {
+                    "color": "green",
+                    "value": null
+                    }
+                ]
+                },
+                "unit": "percentunit"
+            },
+            "overrides": []
+            },
+            "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 27
+            },
+            "id": 28,
+            "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+                "calcs": [
+                "mean"
+                ],
+                "fields": "",
+                "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+            {
+                "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+                },
+                "editorMode": "code",
+                "expr": "hz_nearcache_hits / (hz_nearcache_hits + hz_nearcache_misses)",
+                "interval": "",
+                "legendFormat": "Cache hit %  {}",
+                "range": true,
+                "refId": "A"
+            }
+            ],
+            "title": "Nearcache Hit Percentages",
+            "type": "gauge"
+        }
+        ],
+        "refresh": "5s",
+        "revision": 1,
+        "schemaVersion": 38,
+        "style": "dark",
+        "tags": [],
+        "templating": {
+        "list": []
+        },
+        "time": {
+        "from": "now-5m",
+        "to": "now"
+        },
+        "timepicker": {
+        "refresh_intervals": [
+            "3s"
+        ]
+        },
+        "timezone": "",
+        "title": "Hazelcast Default",
+        "uid": "GiokMJ5Mz",
+        "version": 7,
+        "weekStart": ""
+    }
+{{- end }}

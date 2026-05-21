@@ -1,0 +1,6 @@
+apiVersion: v2
+name: secure-vault-deploy-helm
+description: Umbrella chart for the secure-vault platform — auth, account, transaction, bill-payment, card, and UI.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

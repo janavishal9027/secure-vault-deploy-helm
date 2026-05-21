@@ -1,0 +1,14 @@
+secure-vault-deploy-helm deployed.
+
+Namespace: {{ .Values.namespace }}
+Ingress host: {{ .Values.ingressHost }}
+
+Services rendered (enabled = true):
+{{- range $name, $svc := .Values.microservices }}
+{{- if $svc.enabled }}
+  - {{ $name }} ({{ $svc.image.repo }}:{{ $svc.image.tag }})
+{{- end }}
+{{- end }}
+
+Watch rollout:
+  kubectl -n {{ .Values.namespace }} get pods -w

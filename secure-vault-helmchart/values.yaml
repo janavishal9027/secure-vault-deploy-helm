@@ -1,0 +1,33 @@
+# Default values applied to every render. Per-env values files under
+# envs/<env>/*_values.yaml override these. Each service is a key under
+# `microservices.*`. Disabled by default — only services whose env file sets
+# `enabled: true` are rendered.
+
+namespace: secure-vault-dev-a
+ingressHost: secure-vault-dev-a.cntrlflix.com
+
+ingressAnnotations:
+  traefik.ingress.kubernetes.io/router.entrypoints: web
+
+imagePullPolicy: IfNotPresent
+
+defaults:
+  replicas: 1
+  probes:
+    readiness:
+      initialDelaySeconds: 20
+      periodSeconds: 5
+      failureThreshold: 12
+    liveness:
+      initialDelaySeconds: 60
+      periodSeconds: 20
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "384Mi"
+    limits:
+      cpu: "750m"
+      memory: "640Mi"
+
+microservices: {}

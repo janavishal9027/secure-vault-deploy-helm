@@ -1,0 +1,50 @@
+microservices:
+  authentication-service:
+    enabled: true
+    port: 3211
+    image:
+      repo: kittuvittu/secure-vault-authentication
+    ingress:
+      path: /authentication
+    env:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.57:5432/digital-notes?currentSchema=secure-vault"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SECURITY_JWT_EXPIRATION_TIME: "1800000"
+      DIGITAL_APP_ROLES: "http://roles-service.secure-vault-test.svc.cluster.local/roles"
+      DELEGATE_BOOTSTRAP_ALLOW_FIRST_ONLY: "false"
+      SPRING_MAIL_HOST: "smtp.gmail.com"
+      SPRING_MAIL_PORT: "587"
+      FRONTEND_URL: "https://secure-vault-test.cntrlflix.com"
+      SWAGGER_ENABLED: "true"
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
+    secretEnv:
+      SPRING_DATASOURCE_PASSWORD:
+        secretName: secure-vault-db
+        key: password
+      SECURITY_JWT_SECRET_KEY:
+        secretName: secure-vault-jwt
+        key: secret
+      INTERNAL_ROLE_SERVICE_KEY:
+        secretName: secure-vault-internal
+        key: roleServiceKey
+      DELEGATE_BOOTSTRAP_KEY:
+        secretName: secure-vault-internal
+        key: delegateBootstrapKey
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID:
+        secretName: secure-vault-oauth
+        key: githubClientId
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET:
+        secretName: secure-vault-oauth
+        key: githubClientSecret
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID:
+        secretName: secure-vault-oauth
+        key: googleClientId
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET:
+        secretName: secure-vault-oauth
+        key: googleClientSecret
+      SPRING_MAIL_USERNAME:
+        secretName: secure-vault-mail
+        key: username
+      SPRING_MAIL_PASSWORD:
+        secretName: secure-vault-mail
+        key: password

@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\edms-access\\templates",
+    "\\edms-adapter-svc\\templates",
+    "\\edms-agreement-management",
+    "\\edms-agreement-management\\templates"
+  ],
+  "SelectedNode": "\\edms-agreement-management\\templates\\deployment.yaml",
+  "PreviewInSolutionExplorer": false
+}

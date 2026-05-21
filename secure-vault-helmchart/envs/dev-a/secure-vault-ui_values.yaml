@@ -1,0 +1,31 @@
+# Single env-agnostic image — the SPA resolves API URLs from
+# window.location at page load, so the same SHA-tagged image deploys to
+# every env and points at each env's ingress hostname automatically.
+microservices:
+  secure-vault-ui:
+    enabled: true
+    port: 80
+    image:
+      repo: kittuvittu/secure-vault-ui
+    ingress:
+      # Catch-all — React Router serves everything not claimed by the
+      # backend prefixes (/authentication, /roles, /notes, /ai-core,
+      # /ai-worker). Most-specific-match in Traefik means the longer
+      # backend prefixes win.
+      path: /
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        cpu: "250m"
+        memory: "256Mi"
+    probes:
+      readiness:
+        initialDelaySeconds: 2
+        periodSeconds: 5
+        failureThreshold: 6
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 20
+        failureThreshold: 3

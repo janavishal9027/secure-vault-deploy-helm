@@ -1,0 +1,13 @@
+# Container registry config consumed by every app-side pipeline's build
+# step. Lives here (instead of as a Bitbucket repo variable on each app
+# repo) so the user can be changed in one place. The password is still a
+# Bitbucket secured variable (DOCKER_PASSWORD) — secrets can't be
+# committed plaintext.
+#
+# How it's read by the app pipelines:
+#   git clone --depth 1 $DEPLOY_REPO_SSH_URL deploy-repo
+#   DOCKER_USER=$(yq -r '.docker.user' deploy-repo/ci/registry.yaml)
+#   docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+docker:
+  user: kittuvittu

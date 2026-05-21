@@ -1,0 +1,95 @@
+{{/*
+One Deployment per enabled microservice.
+
+A service is enabled when its env values file sets
+  microservices.<name>.enabled: true
+
+Required per-service fields:
+  image.repo, image.tag      Docker image (tag fed in from
+                             image-versions/<env>_image.yaml at deploy time)
+  port                       Container port the app listens on
+Optional:
+  servicePort, replicas, env, secretEnv, probes, resources
+Probes:
+  probes.readiness / probes.liveness:
+    Either supply `httpGet: { path, port }` (for /health endpoints) or
+    leave omitted to use TCP socket probe on $svc.port.
+  Set probes: null to disable.
+*/}}
+{{- $defaults := .Values.defaults -}}
+{{- range $name, $svc := .Values.microservices }}
+{{- if $svc.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}-deployment
+  namespace: {{ $.Values.namespace }}
+  labels:
+    {{- include "sv.labels" (dict "name" $name "release" $.Release.Name) | nindent 4 }}
+spec:
+  replicas: {{ coalesce $svc.replicas $.Values.replicas $defaults.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      containers:
+        - name: {{ $name }}
+          {{- if and $svc.image.digest (ne $svc.image.digest "PLACEHOLDER") }}
+          image: "{{ $svc.image.repo }}:{{ $svc.image.tag }}@{{ $svc.image.digest }}"
+          {{- else }}
+          image: "{{ $svc.image.repo }}:{{ $svc.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ $.Values.imagePullPolicy }}
+          ports:
+            - containerPort: {{ $svc.port }}
+          {{- if or $svc.env $svc.secretEnv }}
+          env:
+            {{- range $k, $v := $svc.env }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
+            {{- end }}
+            {{- range $k, $ref := $svc.secretEnv }}
+            - name: {{ $k }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $ref.secretName }}
+                  key: {{ $ref.key }}
+            {{- end }}
+          {{- end }}
+          {{- if ne $svc.probes nil }}
+          {{- $rp := merge (dict) (default (dict) ($svc.probes).readiness) $defaults.probes.readiness }}
+          readinessProbe:
+            {{- if $rp.httpGet }}
+            httpGet:
+              path: {{ $rp.httpGet.path }}
+              port: {{ default $svc.port $rp.httpGet.port }}
+            {{- else }}
+            tcpSocket:
+              port: {{ $svc.port }}
+            {{- end }}
+            initialDelaySeconds: {{ $rp.initialDelaySeconds }}
+            periodSeconds: {{ $rp.periodSeconds }}
+            failureThreshold: {{ $rp.failureThreshold }}
+          {{- $lp := merge (dict) (default (dict) ($svc.probes).liveness) $defaults.probes.liveness }}
+          livenessProbe:
+            {{- if $lp.httpGet }}
+            httpGet:
+              path: {{ $lp.httpGet.path }}
+              port: {{ default $svc.port $lp.httpGet.port }}
+            {{- else }}
+            tcpSocket:
+              port: {{ $svc.port }}
+            {{- end }}
+            initialDelaySeconds: {{ $lp.initialDelaySeconds }}
+            periodSeconds: {{ $lp.periodSeconds }}
+            failureThreshold: {{ $lp.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml (default $defaults.resources $svc.resources) | nindent 12 }}
+{{- end }}
+{{- end }}

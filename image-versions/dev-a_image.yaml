@@ -1,0 +1,32 @@
+# Image identities currently deployed in dev-a. Each app pipeline pushes
+# an image and prints both `tag` (commit SHA) and `digest` (sha256).
+# Paste BOTH into the matching block, commit, push.
+#
+# This file is loaded LAST in the helm command so its image.tag /
+# image.digest override anything in per-service values files.
+
+microservices:
+  authentication-service:
+    image:
+      tag: 54e28eb1098a577bcc35b600fbc0efe0e37c63d0
+      digest: sha256:801be6aadb45d3e269b4aae64661fc3b79ea9c9749afdf2642c929bd4631c24c
+  roles-service:
+    image:
+      tag: fa8de95c32453d0532d126e0207b022d5ae910d5
+      digest: sha256:8e5afd5d6ac589019c5421f896380d3e7b9764f6060c0538089778f8eb7458bb
+  notes-service:
+    image:
+      tag: 8a24912eae743f0f600afa0236bbea1112cfa943
+      digest: sha256:5fdd1ab74faef6c75255941cdc4dff1381f91fd5bc3856cc5f48a211bf13384e
+  ai-core-service:
+    image:
+      tag: 7db8a0abedac6e9a9f2d87a2fb0d7b2c624f7786
+      digest: sha256:cb6e6e9b296f71a4b455ecf3ebf0082596c3779d8555984cc02fab1430fe4a95
+  ai-worker-service:
+    image:
+      tag: 45be18fc8ec6682f124185569c42a29be3b5ec45
+      digest: sha256:35503bf0554f92e1f0c93f95233d57da6470bd220c34ac616bbf561f2b1659c7
+  secure-vault-ui:
+    image:
+      tag: 96e3451ffca54f75cd1bddd18c632866fc9f6f7f
+      digest: sha256:16f850005acd6563950cbe53b7ae78a40a65decc8aae7d7675b53cfe52b789e9

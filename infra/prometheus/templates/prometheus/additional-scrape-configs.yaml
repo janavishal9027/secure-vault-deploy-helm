@@ -1,0 +1,14 @@
+#this is for creating a secret which will have Job details for additional scrape configs. App teams can override the secret to have more jobs.
+
+
+apiVersion: v1
+data:
+  prometheus-additional.yaml: LSBqb2JfbmFtZTogaW5mcmEvY3VzdG9tLWpvYgogIGhvbm9yX2xhYmVsczogdHJ1ZQogIGhvbm9yX3RpbWVzdGFtcHM6IHRydWUKICBzY3JhcGVfaW50ZXJ2YWw6IDMwcwogIHNjcmFwZV90aW1lb3V0OiAxMHMKICBtZXRyaWNzX3BhdGg6IC9tZXRyaWNzCiAgc2NoZW1lOiBodHRwCiAgc3RhdGljX2NvbmZpZ3M6CiAgLSB0YXJnZXRzOgogICAgLSBwcm9tZXRoZXVzLXByb21ldGhldXMtcHVzaGdhdGV3YXk6OTA5MQ==
+kind: Secret
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: infra
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: additional-scrape-configs

@@ -1,0 +1,82 @@
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterInput
+metadata:
+  labels:
+    fluentbit.fluent.io/component: logging
+    fluentbit.fluent.io/enabled: "true"
+  name: fluentbit-ingress-input
+spec:
+  tail:
+    db: /fluent-bit/tail/pos-ingress.db
+    dbSync: Normal
+    memBufLimit: 15MB
+    parser: cri
+    path: /var/log/containers/*ingress*.log
+    excludePath: "/var/log/containers/fluent*.log"
+    refreshIntervalSeconds: 10
+    skipLongLines: true
+    tag: ingress*
+---
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterOutput
+metadata:
+  name: fluentbit-ingress-output
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+    fluentbit.fluent.io/component: logging
+spec:
+  match: ingress*
+  alias: opensearch
+  opensearch:
+    host: vpc-esingress-uxxztajoouxuqtzgf4hinoqg44.eu-west-1.es.amazonaws.com
+    port: 443
+    httpUser:
+      valueFrom:
+        secretKeyRef: 
+          key: user
+          name: opensearchsecret02
+    httpPassword:
+      valueFrom:
+        secretKeyRef: 
+          key: password
+          name: opensearchsecret02          
+    generateID: true
+    logstashPrefix: ingress
+    logstashFormat: true
+    timeKey: "@timestamp"
+    tls:
+      verify: false
+--- 
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterFilter
+metadata:
+  labels:
+    fluentbit.fluent.io/component: logging
+    fluentbit.fluent.io/enabled: "true"
+  name: fluentbit-ingress-filter
+spec:
+  filters:
+  - kubernetes:
+      annotations: false
+      kubeCAFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      kubeTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      kubeURL: https://kubernetes.default.svc:443
+      labels: false
+      kubeTagPrefix: ingress.var.log.containers.
+  - nest:
+      addPrefix: kubernetes_
+      nestedUnder: kubernetes
+      operation: lift
+  - modify:
+      rules:
+      - remove: stream
+      - remove: kubernetes_pod_id
+      - remove: kubernetes_host
+      - remove: kubernetes_container_hash
+  - nest:
+      nestUnder: kubernetes
+      operation: nest
+      removePrefix: kubernetes_
+      wildcard:
+      - kubernetes_*
+  match: ingress*    

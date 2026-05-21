@@ -1,0 +1,37 @@
+microservices:
+  ai-worker-service:
+    enabled: true
+    port: 8000
+    servicePort: 8000
+    image:
+      repo: kittuvittu/secure-vault-ai-worker
+    ingress:
+      path: /ai-worker
+      stripPrefix: true
+    env:
+      APP_HOST: "0.0.0.0"
+      APP_PORT: "8000"
+      GEMINI_MODEL: "gemini-2.0-flash"
+      SUMMARY_CHUNK_THRESHOLD_CHARS: "8000"
+      SUMMARY_CHUNK_SIZE_CHARS: "6000"
+      SUMMARY_MAX_CONCURRENT_CHUNKS: "4"
+    secretEnv:
+      GEMINI_API_KEY:
+        secretName: secure-vault-ai
+        key: geminiApiKey
+    probes:
+      readiness:
+        httpGet:
+          path: /health
+        initialDelaySeconds: 10
+      liveness:
+        httpGet:
+          path: /health
+        initialDelaySeconds: 30
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "750m"
+        memory: "512Mi"
