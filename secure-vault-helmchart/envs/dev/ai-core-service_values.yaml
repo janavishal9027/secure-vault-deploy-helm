@@ -4,7 +4,7 @@ microservices:
     port: 8001
     servicePort: 8001
     image:
-      repo: kittuvittu/secure-vault-ai-core
+      repo: kittuvittu/secure-vault-ai-core-service
     ingress:
       path: /ai-core
       # Traefik StripPrefix Middleware — FastAPI routers are mounted at the
