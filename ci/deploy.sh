@@ -7,8 +7,8 @@
 # container.
 #
 # Required env:
-#   ENV_NAME                 Logical env (dev-a / dev-b / test / stage /
-#                            prod) — picks the values dir under
+#   ENV_NAME                 Logical env (dev / test / prod) — picks the
+#                            values dir under
 #                            secure-vault-helmchart/envs/<ENV_NAME>/.
 # Optional (override values from _namespace_values.yaml):
 #   VPS_USER, VPS_HOST       SSH login overrides

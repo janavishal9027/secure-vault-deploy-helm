@@ -6,22 +6,22 @@
 #   - vps.* — read by ci/deploy.sh on the runner
 #   - lxd.* — read by ci/deploy.sh and ci/deploy-remote.sh on the VPS
 
-namespace: secure-vault-stage
-ingressHost: secure-vault-stage.cntrlflix.com
+namespace: secure-vault-dev
+ingressHost: secure-vault-dev.cntrlflix.com
 
 replicas: 1
 
 vps:
   user: root
   host: 72.60.206.166
-  remoteDir: /root/stage/secure-vault-deploy-helm
+  remoteDir: /root/dev/secure-vault-deploy-helm
 
 lxd:
-  container: secure-vault-stage
+  container: secure-vault-dev
   # Bridge IP of the LXD container on lxdbr0 — host nginx proxy_pass target.
   # Also reused by service env vars as the in-cluster Postgres / Kafka host
   # (the LXD container's k3s pods reach host-network services via this IP).
-  bridgeIp: 10.86.216.217
+  bridgeIp: 10.86.216.71
 
 # Secrets rendered into k8s Secret resources by templates/secret.yaml.
 # WARNING — plaintext values committed in git. Migrate to External Secrets
@@ -32,7 +32,7 @@ lxd:
 # against the same key). Set both before first deploy.
 secrets:
   secure-vault-db:
-    password: REPLACE_WITH_stage_POSTGRES_PASSWORD
+    password: REPLACE_WITH_dev_POSTGRES_PASSWORD
   secure-vault-jwt:
     secret: REPLACE_WITH_BASE64_HMAC_SECRET_SHARED_ACROSS_SERVICES
   secure-vault-internal:

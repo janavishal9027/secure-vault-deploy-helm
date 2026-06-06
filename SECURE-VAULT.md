@@ -1,7 +1,7 @@
 # secure-vault — operations
 
-Centralized deploy for the secure-vault platform across 5 envs:
-`dev-a`, `dev-b`, `test`, `stage`, `prod`. Each env runs k3s inside its
+Centralized deploy for the secure-vault platform across 3 envs:
+`dev`, `test`, `prod`. Each env runs k3s inside its
 own LXD container on a shared VPS.
 
 ## Services in scope
@@ -20,10 +20,8 @@ own LXD container on a shared VPS.
 
 | Env    | LXD container         | Bridge IP        |
 |--------|-----------------------|------------------|
-| dev-a  | secure-vault-dev-a    | 10.86.216.71     |
-| dev-b  | secure-vault-dev-b    | 10.86.216.190    |
+| dev    | secure-vault-dev      | 10.86.216.71     |
 | test   | secure-vault-test     | 10.86.216.57     |
-| stage  | secure-vault-stage    | 10.86.216.217    |
 | prod   | secure-vault-prod     | 10.86.216.180    |
 
 The bridge IP is the LXD container's address on `lxdbr0`. It's both the
@@ -36,7 +34,7 @@ those run on the LXD host itself, not in k3s).
 ### 1. Install Helm inside each container
 
 ```bash
-for env in dev-a dev-b test stage prod; do
+for env in dev test prod; do
   lxc exec secure-vault-$env -- bash -c \
     'curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
 done
@@ -48,7 +46,7 @@ Every env's `_namespace_values.yaml` ships with `REPLACE_WITH_*`
 placeholders under `secrets:`. Replace them before the first deploy.
 
 ```yaml
-# secure-vault-helmchart/envs/dev-a/_namespace_values.yaml
+# secure-vault-helmchart/envs/dev/_namespace_values.yaml
 secrets:
   secure-vault-db:
     password: <env-specific postgres password>

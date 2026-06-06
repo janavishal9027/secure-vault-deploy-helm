@@ -21,7 +21,7 @@ microservices:
       POSTGRES_SCHEMA: "ai_core"
       CHAT_PROVIDER: "openai"
       EMBED_PROVIDER: "gemini"
-      CORS_ALLOWED_ORIGINS: "https://secure-vault-dev-a.cntrlflix.com"
+      CORS_ALLOWED_ORIGINS: "https://secure-vault-dev.cntrlflix.com"
     secretEnv:
       POSTGRES_PASSWORD:
         secretName: secure-vault-db

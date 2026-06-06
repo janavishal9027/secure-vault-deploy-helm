@@ -10,11 +10,11 @@ microservices:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.71:5432/digital-notes?currentSchema=secure-vault"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SECURITY_JWT_EXPIRATION_TIME: "1800000"
-      DIGITAL_APP_ROLES: "http://roles-service.secure-vault-dev-a.svc.cluster.local/roles"
+      DIGITAL_APP_ROLES: "http://roles-service.secure-vault-dev.svc.cluster.local/roles"
       DELEGATE_BOOTSTRAP_ALLOW_FIRST_ONLY: "false"
       SPRING_MAIL_HOST: "smtp.gmail.com"
       SPRING_MAIL_PORT: "587"
-      FRONTEND_URL: "https://secure-vault-dev-a.cntrlflix.com"
+      FRONTEND_URL: "https://secure-vault-dev.cntrlflix.com"
       SWAGGER_ENABLED: "true"
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
     secretEnv:

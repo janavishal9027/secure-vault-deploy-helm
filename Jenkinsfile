@@ -26,7 +26,7 @@ pipeline {
   parameters {
     choice(
       name: 'ENV_NAME',
-      choices: ['dev-a', 'dev-b', 'test', 'stage', 'prod'],
+      choices: ['dev', 'test', 'prod'],
       description: 'Target environment — picks secure-vault-helmchart/envs/<ENV_NAME>/ and image-versions/<ENV_NAME>_image.yaml.'
     )
     string(

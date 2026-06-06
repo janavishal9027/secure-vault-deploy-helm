@@ -1,4 +1,4 @@
-# Image identities currently deployed in dev-a. Each app pipeline pushes
+# Image identities currently deployed in dev. Each app pipeline pushes
 # an image and prints both `tag` (commit SHA) and `digest` (sha256).
 # Paste BOTH into the matching block, commit, push.
 #

@@ -18,10 +18,8 @@ secure-vault-helmchart/
 │   ├── _helpers.tpl
 │   └── NOTES.txt
 └── envs/
-    ├── dev-a/   _namespace_values.yaml + per-service values
-    ├── dev-b/
+    ├── dev/    _namespace_values.yaml + per-service values
     ├── test/
-    ├── stage/
     └── prod/
 ```
 
@@ -33,12 +31,12 @@ argument so they win.
 
 ```bash
 helm template secure-vault ./secure-vault-helmchart \
-  -f ./secure-vault-helmchart/envs/dev-a/_namespace_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/auth-service_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/account-service_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/transaction-service_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/bill-payment-service_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/card-service_values.yaml \
-  -f ./secure-vault-helmchart/envs/dev-a/ui_values.yaml \
-  -f ./image-versions/dev-a_image.yaml
+  -f ./secure-vault-helmchart/envs/dev/_namespace_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/authentication-service_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/roles-service_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/notes-service_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/ai-core-service_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/ai-worker-service_values.yaml \
+  -f ./secure-vault-helmchart/envs/dev/secure-vault-ui_values.yaml \
+  -f ./image-versions/dev_image.yaml
 ```
