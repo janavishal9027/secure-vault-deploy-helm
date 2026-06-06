@@ -108,7 +108,7 @@ lxc exec "$LXD_CONTAINER" -- helm upgrade --install secure-vault \
   "${CONTAINER_DIR}/${CHART_DIR}" \
   -n "$NAMESPACE" --create-namespace \
   --kubeconfig /etc/rancher/k3s/k3s.yaml \
-  "${HELM_ARGS[@]}"
+  "${HELM_ARGS[@]}" "${SECRETS_ARG[@]}"
 
 echo "=== Waiting for rollouts to be Available (services: ${WAIT_SVCS[*]}) ==="
 for svc in "${WAIT_SVCS[@]}"; do
