@@ -8,25 +8,25 @@
 microservices:
   authentication-service:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: f611c0104b0dff6f760b1516ecbcc07c67fc5186
+      digest: sha256:81ca42d05df05ab8b7feb1222796768918e6093ec7bcb4d5fb71b205fe65ef72
   roles-service:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: e64e423bd13617c879e160d2484c07c230a9f24b
+      digest: sha256:834a6c566cd743526055609c02bf41eae1b4923bcc49357a72011a9e349d2901
   notes-service:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: e4dfbd2ced893b73c56051da6efb2d23db09be96
+      digest: sha256:489f6c1e88077b4bc6ba945bd72c60f553c95f3d0cdc78c9b3eb31ca10a75f83
   ai-core-service:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: 031b3236f6ad5713a602effb57d5350fcc1277bb
+      digest: sha256:686f3845ee8090bdddff46e8af29be988e31711d36ab9a0087b5ebf66b3feece
   ai-worker-service:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: cd324d010f64d828ebf9b6e68884cb3bb65e228a
+      digest: sha256:161064da207586a32959c0eede7c1dd45b59d021589c1ef6d5c5d4a4b71b9c17
   secure-vault-ui:
     image:
-      tag: PLACEHOLDER
-      digest: PLACEHOLDER
+      tag: 63877e6383d9813a4f9a5e922e5b857ae2ab366e
+      digest: sha256:eefc9ce9e600f4505e5c1374996d1bd5283645289c682c43997ded808fa01e84
