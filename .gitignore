@@ -1,3 +1,7 @@
 # ignore ALL files in ANY directory named 
 .idea/
 *.iml
+
+# Never commit real secrets — see ci/deploy-remote.sh (external secrets file)
+*_secrets.yaml
+_external_secrets.yaml

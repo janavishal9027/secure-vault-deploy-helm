@@ -24,12 +24,15 @@ lxd:
   bridgeIp: 10.86.216.254
 
 # Secrets rendered into k8s Secret resources by templates/secret.yaml.
-# WARNING — plaintext values committed in git. Migrate to External Secrets
-# Operator + Vault before opening the repo more widely.
+#
+# Real values are NOT committed. They live on the VPS at
+#   /root/secure-vault-secrets/<ENV_NAME>_secrets.yaml
+# and are passed to `helm` LAST by ci/deploy-remote.sh, overriding the
+# REPLACE_* placeholders below. See SECURE-VAULT.md → "Secrets".
 #
 # Each env MUST have a DISTINCT db password. JWT secret MUST be identical
 # across services in the same env (auth/notes/roles/ai-core all validate
-# against the same key). Set both before first deploy.
+# against the same key).
 secrets:
   secure-vault-db:
     password: REPLACE_WITH_dev_POSTGRES_PASSWORD

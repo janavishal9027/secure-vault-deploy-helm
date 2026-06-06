@@ -47,6 +47,21 @@ lxc exec "$LXD_CONTAINER" -- rm -rf "$CONTAINER_DIR"
 lxc exec "$LXD_CONTAINER" -- mkdir -p "$CONTAINER_DIR"
 tar -cf - "$CHART_DIR" "$IMAGE_FILE" | lxc exec "$LXD_CONTAINER" -- tar -xf - -C "$CONTAINER_DIR"
 
+# --- External secrets (kept OUT of git) -------------------------------------
+# Real credentials live on the VPS at $SECRETS_FILE (never committed). They are
+# pushed into the container and passed to helm LAST so they override the
+# REPLACE_* placeholders in envs/<ENV>/_namespace_values.yaml. If the file is
+# absent the deploy still runs (with placeholders → apps fail auth) and warns.
+SECRETS_FILE="${SECRETS_FILE:-/root/secure-vault-secrets/${ENV_NAME}_secrets.yaml}"
+SECRETS_ARG=()
+if [[ -f "$SECRETS_FILE" ]]; then
+  echo "=== External secrets: $SECRETS_FILE ==="
+  lxc file push "$SECRETS_FILE" "${LXD_CONTAINER}${CONTAINER_DIR}/_external_secrets.yaml"
+  SECRETS_ARG=(-f "${CONTAINER_DIR}/_external_secrets.yaml")
+else
+  echo "WARNING: no secrets file at $SECRETS_FILE — deploying with placeholder secrets (auth will fail)" >&2
+fi
+
 echo "=== Waiting for k3s in $LXD_CONTAINER ==="
 for i in $(seq 1 60); do
   if lxc exec "$LXD_CONTAINER" -- /usr/local/bin/k3s kubectl get nodes >/dev/null 2>&1; then
