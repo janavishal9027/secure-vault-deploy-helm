@@ -26,7 +26,7 @@ lxd:
 # Secrets rendered into k8s Secret resources by templates/secret.yaml.
 #
 # Real values are NOT committed. They live on the VPS at
-#   /root/secure-vault-secrets/<ENV_NAME>_secrets.yaml
+#   /home/jenkins/secure-vault-secrets/<ENV_NAME>_secrets.yaml
 # and are passed to `helm` LAST by ci/deploy-remote.sh, overriding the
 # REPLACE_* placeholders below. See SECURE-VAULT.md → "Secrets".
 #

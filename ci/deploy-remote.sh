@@ -52,7 +52,7 @@ tar -cf - "$CHART_DIR" "$IMAGE_FILE" | lxc exec "$LXD_CONTAINER" -- tar -xf - -C
 # pushed into the container and passed to helm LAST so they override the
 # REPLACE_* placeholders in envs/<ENV>/_namespace_values.yaml. If the file is
 # absent the deploy still runs (with placeholders → apps fail auth) and warns.
-SECRETS_FILE="${SECRETS_FILE:-/root/secure-vault-secrets/${ENV_NAME}_secrets.yaml}"
+SECRETS_FILE="${SECRETS_FILE:-/home/jenkins/secure-vault-secrets/${ENV_NAME}_secrets.yaml}"
 SECRETS_ARG=()
 if [[ -f "$SECRETS_FILE" ]]; then
   echo "=== External secrets: $SECRETS_FILE ==="
