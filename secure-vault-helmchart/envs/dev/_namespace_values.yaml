@@ -21,7 +21,7 @@ lxd:
   # Bridge IP of the LXD container on lxdbr0 — host nginx proxy_pass target.
   # Also reused by service env vars as the in-cluster Postgres / Kafka host
   # (the LXD container's k3s pods reach host-network services via this IP).
-  bridgeIp: 10.86.216.71
+  bridgeIp: 10.86.216.254
 
 # Secrets rendered into k8s Secret resources by templates/secret.yaml.
 # WARNING — plaintext values committed in git. Migrate to External Secrets

@@ -9,7 +9,7 @@ microservices:
       # authentication-service should call it via the internal service URL.
       path: /roles
     env:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.71:5432/digital-notes?currentSchema=secure-vault"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.254:5432/digital-notes?currentSchema=secure-vault"
       SPRING_DATASOURCE_USERNAME: "postgres"
       DIGITAL_APP_AUTHENTICATION: "http://authentication-service.secure-vault-dev.svc.cluster.local/authentication"
       SWAGGER_ENABLED: "true"
