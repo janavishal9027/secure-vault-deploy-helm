@@ -15,6 +15,12 @@ microservices:
       SPRING_MAIL_HOST: "smtp.gmail.com"
       SPRING_MAIL_PORT: "587"
       FRONTEND_URL: "https://secure-vault-dev.cntrlflix.com"
+      # Force the OAuth2 callback (redirect_uri) sent to Google/GitHub to the
+      # public https URL — otherwise Spring builds it from the internal http
+      # request and Google returns redirect_uri_mismatch. Must match the
+      # Authorized redirect URI registered with each provider EXACTLY.
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT_URI: "https://secure-vault-dev.cntrlflix.com/authentication/login/oauth2/code/google"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_REDIRECT_URI: "https://secure-vault-dev.cntrlflix.com/authentication/login/oauth2/code/github"
       SWAGGER_ENABLED: "true"
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
     secretEnv:
