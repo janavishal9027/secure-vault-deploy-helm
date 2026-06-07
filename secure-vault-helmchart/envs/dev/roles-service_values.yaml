@@ -21,6 +21,12 @@ microservices:
       INTERNAL_ROLE_SERVICE_KEY:
         secretName: secure-vault-internal
         key: roleServiceKey
+      # roles app reads its JWT key from env var JWT_SECRET_KEY
+      # (security.jwt.secret-key: ${JWT_SECRET_KEY}). Must be the SAME shared
+      # secret as auth/notes/ai-core so tokens validate across services.
+      JWT_SECRET_KEY:
+        secretName: secure-vault-jwt
+        key: secret
     # Lightest service in the stack — no Kafka, no multipart.
     resources:
       requests:
