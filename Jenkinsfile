@@ -67,32 +67,44 @@ pipeline {
           env.RESOLVED_LXD_CONTAINER = params.LXD_CONTAINER?.trim() ?: "secure-vault-${params.ENV_NAME}"
           echo "Deploying ENV_NAME=${env.RESOLVED_ENV_NAME}  LXD_CONTAINER=${env.RESOLVED_LXD_CONTAINER}  SCOPE=${env.RESOLVED_SCOPE}"
         }
-        sh '''
-          set -eu
+        // Real secrets are NOT in git. They live as a per-env Jenkins
+        // "Secret file" credential named `secure-vault-secrets-<ENV_NAME>`
+        // (upload dev_secrets.yaml / test_secrets.yaml / prod_secrets.yaml in
+        // Manage Jenkins → Credentials). withCredentials writes the file to a
+        // temp path, exposes it as $SECRETS_FILE, and deletes it after the
+        // block. deploy-remote.sh reads $SECRETS_FILE and passes it to helm
+        // LAST so it overrides the REPLACE_* placeholders in the chart. This
+        // replaces the hand-placed /home/jenkins/secure-vault-secrets file —
+        // update a secret by editing the Jenkins credential, no SSH needed.
+        withCredentials([file(credentialsId: "secure-vault-secrets-${params.ENV_NAME}", variable: 'SECRETS_FILE')]) {
+          sh '''
+            set -eu
 
-          # The repo may be checked out with CRLF line endings on some
-          # setups; strip them so bash doesn't choke on the script.
-          sed -i 's/\\r$//' ci/deploy-remote.sh
-          chmod +x ci/deploy-remote.sh
+            # The repo may be checked out with CRLF line endings on some
+            # setups; strip them so bash doesn't choke on the script.
+            sed -i 's/\\r$//' ci/deploy-remote.sh
+            chmod +x ci/deploy-remote.sh
 
-          # The `lxc` snap refuses to run when $HOME is outside /home (the
-          # jenkins account's home is /var/lib/jenkins). Point HOME at a
-          # /home-based dir that the jenkins user owns — snap accepts it and
-          # stashes its per-user data there. The dir must exist on the host:
-          #   sudo mkdir -p /home/jenkins && sudo chown jenkins:jenkins /home/jenkins
-          #
-          # Jenkins is on the LXD host, so REMOTE_DIR is just the workspace.
-          # deploy-remote.sh cd's into it and expects the chart +
-          # image-versions layout to be present (which it is — this IS the
-          # deploy repo).
-          env \
-            HOME=/home/jenkins \
-            LXD_CONTAINER="$RESOLVED_LXD_CONTAINER" \
-            ENV_NAME="$RESOLVED_ENV_NAME" \
-            SCOPE="$RESOLVED_SCOPE" \
-            REMOTE_DIR="$WORKSPACE" \
-            bash ci/deploy-remote.sh
-        '''
+            # The `lxc` snap refuses to run when $HOME is outside /home (the
+            # jenkins account's home is /var/lib/jenkins). Point HOME at a
+            # /home-based dir that the jenkins user owns — snap accepts it and
+            # stashes its per-user data there. The dir must exist on the host:
+            #   sudo mkdir -p /home/jenkins && sudo chown jenkins:jenkins /home/jenkins
+            #
+            # Jenkins is on the LXD host, so REMOTE_DIR is just the workspace.
+            # deploy-remote.sh cd's into it and expects the chart +
+            # image-versions layout to be present (which it is — this IS the
+            # deploy repo). SECRETS_FILE points at the withCredentials temp file.
+            env \
+              HOME=/home/jenkins \
+              LXD_CONTAINER="$RESOLVED_LXD_CONTAINER" \
+              ENV_NAME="$RESOLVED_ENV_NAME" \
+              SCOPE="$RESOLVED_SCOPE" \
+              SECRETS_FILE="$SECRETS_FILE" \
+              REMOTE_DIR="$WORKSPACE" \
+              bash ci/deploy-remote.sh
+          '''
+        }
       }
     }
   }
