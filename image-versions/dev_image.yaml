@@ -28,5 +28,5 @@ microservices:
       digest: sha256:3ac6550809c4a21bc0fdc485351153ca405c9a3d44f0c847c62979afe886babf
   secure-vault-ui:
     image:
-      tag: 2f781136a49a723b39ee856dae4b09d3b6cd27f5
-      digest: sha256:453c86ab046a421dd9be695fe0b86387ac081dc2cb253c0a45ae424897a3f7da
+      tag: 87fe54d7763d6b92dafe9d2581594804f6294cff
+      digest: sha256:22cb6b1b80d66f8e44293dabbd3795ae17c5824e83681f20ac7041afc0a2013d
