@@ -8,8 +8,8 @@
 microservices:
   authentication-service:
     image:
-      tag: 8797c73d96762938ab257a201c9464da4b9342d9
-      digest: sha256:2216efb28afa0b0eb863866e4cba786c8004a8c249eb6f04b4bddfb0e9b7e65b
+      tag: 4cd0853244782856e3afe299ac248e8fcb73d760
+      digest: sha256:68c156dda3777d864eeb1fc620654b8b7ad92325aea1ad653564b59378b8e875
   roles-service:
     image:
       tag: ed4e7cc671c25319e821acc7e0e092be8e1c7576
