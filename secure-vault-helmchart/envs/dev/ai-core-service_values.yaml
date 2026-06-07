@@ -14,7 +14,7 @@ microservices:
     env:
       APP_HOST: "0.0.0.0"
       APP_PORT: "8001"
-      POSTGRES_HOST: "10.86.216.254"
+      POSTGRES_HOST: "$(HOST_IP)"
       POSTGRES_PORT: "5432"
       POSTGRES_DB: "digital-notes"
       POSTGRES_USER: "postgres"

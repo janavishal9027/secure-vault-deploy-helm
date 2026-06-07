@@ -47,8 +47,17 @@ spec:
           imagePullPolicy: {{ $.Values.imagePullPolicy }}
           ports:
             - containerPort: {{ $svc.port }}
-          {{- if or $svc.env $svc.secretEnv }}
           env:
+            # Node (LXD container) host IP, injected at runtime via the downward
+            # API. Postgres + Kafka run on this container's host network, so pods
+            # reach them at $(HOST_IP):<port>. Kubelet substitutes $(HOST_IP) in
+            # the env values below at container start, so the DB/broker address
+            # follows the container's DHCP bridge IP automatically — there is no
+            # hardcoded address to update when the container is recreated.
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             {{- range $k, $v := $svc.env }}
             - name: {{ $k }}
               value: {{ $v | quote }}
@@ -60,7 +69,6 @@ spec:
                   name: {{ $ref.secretName }}
                   key: {{ $ref.key }}
             {{- end }}
-          {{- end }}
           {{- if ne $svc.probes nil }}
           {{- $rp := merge (dict) (default (dict) ($svc.probes).readiness) $defaults.probes.readiness }}
           readinessProbe:

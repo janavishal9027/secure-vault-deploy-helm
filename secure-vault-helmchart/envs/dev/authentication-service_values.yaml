@@ -7,7 +7,7 @@ microservices:
     ingress:
       path: /authentication
     env:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://10.86.216.254:5432/digital-notes?currentSchema=secure-vault"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://$(HOST_IP):5432/digital-notes?currentSchema=secure-vault"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SECURITY_JWT_EXPIRATION_TIME: "1800000"
       DIGITAL_APP_ROLES: "http://roles-service.secure-vault-dev.svc.cluster.local/roles"
