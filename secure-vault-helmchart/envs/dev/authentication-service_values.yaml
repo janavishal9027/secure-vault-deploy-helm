@@ -10,7 +10,7 @@ microservices:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://$(HOST_IP):5432/digital-notes?currentSchema=secure-vault"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SECURITY_JWT_EXPIRATION_TIME: "1800000"
-      DIGITAL_APP_ROLES: "http://roles-service.secure-vault-dev.svc.cluster.local/roles"
+      DIGITAL_APP_ROLES: "http://roles-service-service.secure-vault-dev.svc.cluster.local/roles"
       DELEGATE_BOOTSTRAP_ALLOW_FIRST_ONLY: "false"
       SPRING_MAIL_HOST: "smtp.gmail.com"
       SPRING_MAIL_PORT: "587"

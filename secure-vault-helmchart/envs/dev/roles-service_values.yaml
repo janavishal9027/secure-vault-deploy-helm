@@ -11,7 +11,7 @@ microservices:
     env:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://$(HOST_IP):5432/digital-notes?currentSchema=secure-vault"
       SPRING_DATASOURCE_USERNAME: "postgres"
-      DIGITAL_APP_AUTHENTICATION: "http://authentication-service.secure-vault-dev.svc.cluster.local/authentication"
+      DIGITAL_APP_AUTHENTICATION: "http://authentication-service-service.secure-vault-dev.svc.cluster.local/authentication"
       SWAGGER_ENABLED: "true"
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
     secretEnv:
