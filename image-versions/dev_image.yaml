@@ -17,7 +17,7 @@ microservices:
   notes-service:
     image:
       tag: e4dfbd2ced893b73c56051da6efb2d23db09be96
-      digest: sha256:4a0b3bb335217d49b94aa5db088892cedeb2eea48b9ca5c11d94f3514bea8f05
+      digest: sha256:408ab2324618e2d31da3fe7a1c03cd494c2608c9201deaa775982ab117b294c3
   ai-core-service:
     image:
       tag: 031b3236f6ad5713a602effb57d5350fcc1277bb
