@@ -8,8 +8,8 @@
 microservices:
   authentication-service:
     image:
-      tag: 4cd0853244782856e3afe299ac248e8fcb73d760
-      digest: sha256:68c156dda3777d864eeb1fc620654b8b7ad92325aea1ad653564b59378b8e875
+      tag: 165eba1713a57b31fa1261f43ee809ef5ef926cb
+      digest: sha256:21a86184be9b3e8c9600eeef1558ac26ea8e862cca064d6078c912358f7b9cec
   roles-service:
     image:
       tag: ed4e7cc671c25319e821acc7e0e092be8e1c7576
@@ -28,5 +28,5 @@ microservices:
       digest: sha256:38b784ce7ef010b8242d0c37d71ce1715069abc171f5428aa5930bf02ca9309a
   secure-vault-ui:
     image:
-      tag: 08344cbdd83640f0c3a76a46abfea02bc26bab2e
-      digest: sha256:892c3ee7782e007095c713deaa1b5908e66a77bd4597f997ae93aea57d81fcfe
+      tag: 97b6c21e683d5c0b3a4fd50a1969a9f334b83c8a
+      digest: sha256:14e50a86298e59953a85d1af03345daacb767a3c46ec82fe24227435ea111fa8
