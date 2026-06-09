@@ -21,6 +21,12 @@ microservices:
       POSTGRES_SCHEMA: "ai_core"
       CHAT_PROVIDER: "openai"
       EMBED_PROVIDER: "gemini"
+      # Chat is served by OpenRouter (the OPENAI_API_KEY secret is an
+      # OpenRouter sk-or-... key). Without these two, ai-core falls back to
+      # config.py defaults (api.openai.com + gpt-4o-mini) and sends the
+      # OpenRouter key to OpenAI, which 401s with "Incorrect API key".
+      OPENAI_BASE_URL: "https://openrouter.ai/api/v1"
+      OPENAI_CHAT_MODEL: "openai/gpt-oss-120b"
       CORS_ALLOWED_ORIGINS: "https://secure-vault-dev.cntrlflix.com"
     secretEnv:
       POSTGRES_PASSWORD:
