@@ -14,6 +14,8 @@ microservices:
       DIGITAL_APP_AUTHENTICATION: "http://authentication-service-service.secure-vault-dev.svc.cluster.local/authentication"
       AI_CORE_BASE_URL: "http://ai-core-service-service.secure-vault-dev.svc.cluster.local:8001"
       AI_WORKER_BASE_URL: "http://ai-worker-service-service.secure-vault-dev.svc.cluster.local:8000"
+      # Allowed browser origin(s) for CORS — the public UI host in this env.
+      APP_CORS_ALLOWED_ORIGINS: "https://secure-vault-dev.cntrlflix.com"
       SWAGGER_ENABLED: "true"
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
     secretEnv:
