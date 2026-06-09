@@ -21,7 +21,7 @@ microservices:
   ai-core-service:
     image:
       tag: 031b3236f6ad5713a602effb57d5350fcc1277bb
-      digest: sha256:6b752db261545ce09dcf47d4d0373e33807ac6477cc334a7e87b88534e8fde1e
+      digest: sha256:5df0c00b19963696f5ca2cba2a51c73b99f137c94ce77f9588fb5d6f21b402a5
   ai-worker-service:
     image:
       tag: cd324d010f64d828ebf9b6e68884cb3bb65e228a
