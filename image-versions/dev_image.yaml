@@ -9,24 +9,24 @@ microservices:
   authentication-service:
     image:
       tag: b89d6db6aac2ccb71feacb8e2b6e50c2dc0b1ead
-      digest: sha256:217cd02a294d7a90aba936edc716ca57a236cbcdb56fb16917a33063996e084d
+      digest: sha256:f893b1c6ac8af4876d0b0f2b56e8da591fdb173f1ccd069880c610f9afdfb340
   roles-service:
     image:
       tag: de5138bb504165c02437e0dc2b6eed154973fc2b
-      digest: sha256:07c05f48600d45c66988481dd166f3dac021616240ec4057be5b32f73eb47c1d
+      digest: sha256:1dc34e34604b96c3a00653f2f79520f639610ff70bce187572a321d56498b15d
   notes-service:
     image:
       tag: 4a51cd013b6dab615498eea054ee88bcbb948270
-      digest: sha256:946f3ded9d09e6c189368c6e6f737baf0ac8ceae9bff8b8445631ce323916516
+      digest: sha256:b1518736e3becf03b7bfeac43f1112710d0fedb845b2d36c15fbf003225051cc
   ai-core-service:
     image:
       tag: 031b3236f6ad5713a602effb57d5350fcc1277bb
-      digest: sha256:5df0c00b19963696f5ca2cba2a51c73b99f137c94ce77f9588fb5d6f21b402a5
+      digest: sha256:7dfacd5a6bd4f0a69db682a46b0a547c95590112eda9117761e1fd997fc4e577
   ai-worker-service:
     image:
       tag: 0e2163e8918f5d7e38173f8fc9f608a1ada6a73c
-      digest: sha256:81dc86a26c91fc2e212be6d489d81438ea45e41561394690f0f3154a98233ee9
+      digest: sha256:22ab7ea8aa9119b55305eb0360b03a48d4dd3e45380ec8a02c218c18b0132545
   secure-vault-ui:
     image:
-      tag: afbae192b5c82793f399771427f32f65792826d5
-      digest: sha256:d31734bddf72a99651b44fbe67a7779bbcda600303be7014e85e70cddc52878f
+      tag: 04becf3547d633ec39fb2f3bd9c26c4f1f130f6b
+      digest: sha256:97abe476d290b868f152877d498444c7c95f0e2a0e59d4a3a474d1f51d0a480b
