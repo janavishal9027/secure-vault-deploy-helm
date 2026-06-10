@@ -11,19 +11,18 @@ microservices:
     env:
       APP_HOST: "0.0.0.0"
       APP_PORT: "8000"
-      # ai-worker uses an OpenAI-compatible client (AsyncOpenAI) pointed at
-      # OpenRouter — it reads OPENAI_* env vars, NOT GEMINI_*. Injecting
-      # GEMINI_* leaves openai_api_key="" (pydantic extra="ignore"), so
-      # /summarize raises "OPENAI_API_KEY is not configured".
-      OPENAI_BASE_URL: "https://openrouter.ai/api/v1"
-      OPENAI_MODEL: "openai/gpt-oss-120b"
+      # Summaries run on Gemini via its OpenAI-compatible endpoint. ai-worker
+      # reads GEMINI_* env vars; the GEMINI_API_KEY below is the same key that
+      # powers embeddings (secure-vault-ai/geminiApiKey).
+      GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+      GEMINI_MODEL: "gemini-2.0-flash"
       SUMMARY_CHUNK_THRESHOLD_CHARS: "8000"
       SUMMARY_CHUNK_SIZE_CHARS: "6000"
       SUMMARY_MAX_CONCURRENT_CHUNKS: "4"
     secretEnv:
-      OPENAI_API_KEY:
+      GEMINI_API_KEY:
         secretName: secure-vault-ai
-        key: openaiApiKey
+        key: geminiApiKey
     probes:
       readiness:
         httpGet:
