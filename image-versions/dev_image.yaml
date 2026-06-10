@@ -25,7 +25,7 @@ microservices:
   ai-worker-service:
     image:
       tag: cd324d010f64d828ebf9b6e68884cb3bb65e228a
-      digest: sha256:2bbd93a26e640d6e066feaf54f53bda5837def5d62a152287bc60b553c37f272
+      digest: sha256:598076ce491b72d97d532f5c7c2f2075f6214a7d094143f035e2716db2298b12
   secure-vault-ui:
     image:
       tag: afbae192b5c82793f399771427f32f65792826d5
